@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+
+    <style>
+        /* === SIDEBAR ADDITION ONLY === */
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            text-decoration: underline;
+        }
+
+        /* push your existing dashboard so it won't be covered */
+        .dashboard {
+            margin-left: 240px;
+            width: 100%;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+   
+    <header class="navbar">
+        <div class="brand">Clinic Admin</div>
+        <nav>
+            <button class="button small" id="logout-button">Logout</button>
+        </nav>
+    </header>
+
+    <!-- NEW WRAPPER -->
+    <div class="container">
+
+        <!-- SIDEBAR (NEW) -->
+        <aside class="sidebar">
+            <h3>Menu</h3>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#users">Users & Staff</a></li>
+                <li><a href="#appointments">Appointments</a></li>
+                <li><a href="#create">Create Appointment</a></li>
+            </ul>
+        </aside>
+
+        <!-- YOUR ORIGINAL CODE (UNCHANGED, just added IDs) -->
+        <main class="dashboard">
+
+            <section id="dashboard" class="dashboard-section">
+                <h2>Admin Dashboard</h2>
+                <p>Manage users, staff, and clinic appointments.</p>
+            </section>
+
+            <section id="users" class="dashboard-section">
+                <h3>All Users & Staff</h3>
+                <div id="user-list" class="table-responsive"></div>
+            </section>
+
+            <section id="appointments" class="dashboard-section">
+                <h3>Appointments</h3>
+                <div id="appointment-list" class="table-responsive"></div>
+            </section>
+
+            <section id="create" class="dashboard-section">
+                <h3>Create Appointment</h3>
+
+                <form id="appointment-form" class="dashboard-form">
+
+                    <label>User / Patient</label>
+                    <select id="appointment-user"></select>
+
+                    <label>Staff</label>
+                    <select id="appointment-staff"></select>
+
+                    <label>Date</label>
+                    <input type="date" id="appointment-date" />
+
+                    <label>Time</label>
+                    <input type="time" id="appointment-time" />
+
+                    <label>Status</label>
+                    <select id="appointment-status">
+                        <option value="Pending">Pending</option>
+                        <option value="Confirmed">Confirmed</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+
+                    <button type="submit" class="button">
+                        Create Appointment
+                    </button>
+                </form>
+
+                <div id="admin-message" class="message"></div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+
+</body>
+</html>

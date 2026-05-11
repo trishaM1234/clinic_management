@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Dashboard</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+
+    <!-- SIDEBAR STYLE (shared with admin) -->
+    <style>
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 220px;
+            background: #1e293b;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            top: 60px;
+            bottom: 0;
+            left: 0;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 20px;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar li {
+            margin-bottom: 15px;
+        }
+
+        .sidebar a {
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .sidebar a:hover {
+            background: #334155;
+        }
+
+        .dashboard {
+            margin-left: 240px;
+            width: 100%;
+            padding: 20px;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="navbar">
+        <div class="brand">Clinic Staff</div>
+        <nav>
+            <button class="button small" id="logout-button">Logout</button>
+        </nav>
+    </header>
+
+    <!-- WRAPPER -->
+    <div class="container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h3>Menu</h3>
+            <ul>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#appointments">Appointments</a></li>
+            </ul>
+        </aside>
+
+        <!-- MAIN CONTENT (UNCHANGED LOGIC) -->
+        <main class="dashboard">
+
+            <!-- TITLE -->
+            <section id="dashboard" class="dashboard-section">
+                <h2>Staff Dashboard</h2>
+                <p>View assigned appointments and update their status.</p>
+            </section>
+
+            <!-- APPOINTMENTS -->
+            <section id="appointments" class="dashboard-section">
+                <h3>Assigned Appointments</h3>
+
+                <div id="appointment-list" class="table-responsive"></div>
+
+                <div id="staff-message" class="message"></div>
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="/static/js/dashboard.js"></script>
+
+</body>
+</html>

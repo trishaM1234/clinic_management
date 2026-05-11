@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clinic Appointment Management System</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+
+<body>
+
+    
+    <header class="navbar">
+        <div class="brand">Clinic Appointment Management System</div>
+        <nav>
+            <a href="#home">Home</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+            <a class="button" href="/auth">Login / Register</a>
+        </nav>
+    </header>
+
+    
+    <main>
+
+        
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>Clinic Appointment Management System</h1>
+                <p>Manage appointments, staff, and patient care with a clean dashboard.</p>
+                <a class="button large" href="/auth">Get Started</a>
+            </div>
+
+            <div class="hero-image">
+                <div class="hero-box">Book appointments faster</div>
+            </div>
+        </section>
+
+        
+        <section class="features" id="about">
+            <h2>Why choose our clinic system?</h2>
+
+            <div class="cards">
+                <div class="card">
+                    <h3>Patient Booking</h3>
+                    <p>Patients can book and review appointments quickly.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Staff Coordination</h3>
+                    <p>Staff can manage appointments and update status.</p>
+                </div>
+
+                <div class="card">
+                    <h3>Admin Controls</h3>
+                    <p>Admins monitor users, staff, and system activity.</p>
+                </div>
+            </div>
+        </section>
+
+        
+        <section class="contact" id="contact">
+            <h2>Contact</h2>
+            <p>Questions? Reach out to clinic support anytime.</p>
+        </section>
+
+    </main>
+
+    
+    <footer>
+        <p>&copy; 2026 Clinic Monitoring System</p>
+    </footer>
+
+    
+    <script>
+        const user = JSON.parse(localStorage.getItem("clinicUser"));
+
+        
+        if (user?.role) {
+            if (user.role === "admin") {
+                window.location.href = "/admin";
+            } else if (user.role === "staff") {
+                window.location.href = "/staff";
+            } else if (user.role === "user") {
+                window.location.href = "/user";
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+
+<body>
+
+   
+    <header class="navbar">
+        <div class="brand">Patient Portal</div>
+        <nav>
+            <button class="button small" id="logout-button">Logout</button>
+        </nav>
+    </header>
+
+   
+    <main class="dashboard">
+
+      
+        <section class="dashboard-section">
+            <h2>User Dashboard</h2>
+            <p>Book appointments and view your history.</p>
+        </section>
+
+       
+        <section class="dashboard-section">
+            <h3>Book Appointment</h3>
+
+            <form id="appointment-form" class="dashboard-form">
+
+                <label>Choose Staff</label>
+                <select id="appointment-staff"></select>
+
+                <label>Date</label>
+                <input type="date" id="appointment-date" />
+
+                <label>Time</label>
+                <input type="time" id="appointment-time" />
+
+                <button type="submit" class="button">
+                    Book Appointment
+                </button>
+            </form>
+
+            <div id="user-message" class="message"></div>
+        </section>
+
+      
+        <section class="dashboard-section">
+            <h3>Your Appointment History</h3> 
+
+            <div id="appointment-list" class="table-responsive"></div>
+        </section>
+
+    </main>
+
+    
+    <script src="/static/js/dashboard.js"></script>
+
+</body>
+</html>
