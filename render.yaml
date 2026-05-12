@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: clinic-appointment
+    runtime: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app
+    healthCheckPath: /health
+    envVars:
+      - key: FLASK_DEBUG
+        value: "false"
+      - key: AUTH_TOKEN
+        generateValue: true
+      - key: ORACLE_USER
+        sync: false
+      - key: ORACLE_PASSWORD
+        sync: false
+      - key: ORACLE_DSN
+        sync: false

@@ -1,0 +1,268 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background: #f4f7fb;
+    color: #2b3a4f;
+    min-height: 100vh;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: #ffffff;
+    border-bottom: 1px solid #e0e6ef;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #1d2939;
+}
+
+nav a,
+nav button {
+    margin-left: 1rem;
+    text-decoration: none;
+    color: #1d2939;
+    border: 1px solid transparent;
+    background: transparent;
+    cursor: pointer;
+}
+
+.button,
+button {
+    border: none;
+    background: #3751ff;
+    color: #ffffff;
+    padding: 0.9rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.button:hover,
+button:hover {
+    background: #3751ff;
+}
+
+.button.small {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+}
+
+.hero {
+    display: grid;
+    grid-template-columns: 1.25fr 1fr;
+    gap: 2rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 2rem;
+}
+
+.hero-content h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin-bottom: 1rem;
+}
+
+.hero-content p {
+    margin-bottom: 1.75rem;
+    line-height: 1.8;
+    max-width: 620px;
+}
+
+.hero-box {
+    border-radius: 24px;
+    background-image: url("clinic2.jpg");
+    color: #070707;
+    font-size: 1.25rem;
+    font-weight: bold;
+    padding: 2rem;
+    min-height: 320px;
+    display: grid;
+    place-items: center;
+    text-align: center;
+    box-shadow: 0 20px 55px rgba(32, 53, 120, 0.15);
+}
+
+.features,
+.contact,
+.dashboard-section,
+.auth-panel {
+    background: #ffffff;
+    margin: 1.5rem auto;
+    padding: 2rem;
+    border-radius: 24px;
+    max-width: 1200px;
+    box-shadow: 0 10px 30px rgba(69, 94, 136, 0.08);
+}
+
+.features h2,
+.contact h2,
+.dashboard-section h2,
+.dashboard-section h3 {
+    margin-bottom: 1rem;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.card {
+    padding: 1.5rem;
+    border: 1px solid #e6ecf7;
+    border-radius: 20px;
+    background: #fcfdff;
+}
+
+.card h3 {
+    margin-bottom: 0.75rem;
+}
+
+.auth-page {
+    display: grid;
+    place-items: center;
+    min-height: calc(100vh - 80px);
+    padding: 2rem;
+}
+
+.auth-panel {
+    width: 100%;
+    max-width: 520px;
+}
+
+.tabs {
+    display: flex;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e0e6ef;
+    margin-bottom: 1.5rem;
+}
+
+.tab {
+    flex: 1;
+    padding: 1rem;
+    text-align: center;
+    background: #f8fbff;
+    border: none;
+    cursor: pointer;
+}
+
+.tab.active {
+    background: #ffffff;
+    font-weight: 700;
+}
+
+.auth-form {
+    display: none;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.auth-form.active {
+    display: grid;
+}
+
+.auth-form label,
+.dashboard-form label {
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+input,
+select {
+    padding: 0.95rem 1rem;
+    border: 1px solid #d8e0f0;
+    border-radius: 14px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+button[type="submit"] {
+    width: fit-content;
+}
+
+.dashboard {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 2rem 2rem;
+}
+
+.dashboard-form {
+    display: grid;
+    gap: 1rem;
+    max-width: 520px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th,
+td {
+    text-align: left;
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid #eef2f8;
+}
+
+th {
+    background: #f8fbff;
+    color: #1d2939;
+}
+
+.message {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 14px;
+    font-size: 0.95rem;
+}
+
+.message.error {
+    background: #ffe7e7;
+    color: #9d1f1f;
+}
+
+.message.success {
+    background: #e8f5e6;
+    color: #1f6d2d;
+}
+
+@media (max-width: 900px) {
+    .hero {
+        grid-template-columns: 1fr;
+    }
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .navbar nav {
+        margin-top: 0.75rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
