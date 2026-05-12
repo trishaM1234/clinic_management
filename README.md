@@ -90,10 +90,15 @@ FLASK_DEBUG=false
 AUTH_TOKEN=<secure-random-token>
 ORACLE_USER=<your-oracle-user>
 ORACLE_PASSWORD=<your-oracle-password>
-ORACLE_DSN=<public-or-private-oracle-host>:1521/<service-name>
+ORACLE_HOST=<public-or-private-oracle-host>
+ORACLE_PORT=1521
+ORACLE_SERVICE_NAME=<service-name-like-XE>
 ```
 
-The Oracle database must be reachable from Render. A local DSN like `localhost:1521/XE`
+You can also use `ORACLE_DSN` instead of the three split connection values, but it
+must be a full Easy Connect string like `host.example.com:1521/XE`, not just `XE`.
+
+The Oracle database must be reachable from Render. A local host like `localhost`
 only works on your computer and will not work after deployment.
 
 ## Notes

@@ -20,17 +20,42 @@ logging.basicConfig(level=logging.INFO)
 # ========================
 ORACLE_USER = os.getenv("ORACLE_USER")
 ORACLE_PASSWORD = os.getenv("ORACLE_PASSWORD")
-ORACLE_DSN = os.getenv("ORACLE_DSN")
+ORACLE_DSN = os.getenv("ORACLE_DSN", "").strip()
+ORACLE_HOST = os.getenv("ORACLE_HOST", "").strip()
+ORACLE_PORT = os.getenv("ORACLE_PORT", "1521").strip()
+ORACLE_SERVICE_NAME = os.getenv("ORACLE_SERVICE_NAME", "").strip()
+
+
+def get_oracle_dsn():
+    if ORACLE_HOST and ORACLE_SERVICE_NAME:
+        return f"{ORACLE_HOST}:{ORACLE_PORT}/{ORACLE_SERVICE_NAME}"
+
+    if not ORACLE_DSN:
+        return ""
+
+    is_connect_descriptor = ORACLE_DSN.startswith("(")
+    is_easy_connect = "/" in ORACLE_DSN or ":" in ORACLE_DSN
+
+    if not is_connect_descriptor and not is_easy_connect:
+        raise RuntimeError(
+            "ORACLE_DSN must be a full Easy Connect string like "
+            "'host:1521/XE', not just an alias like 'XE'. "
+            "On Render, set ORACLE_HOST, ORACLE_PORT, and "
+            "ORACLE_SERVICE_NAME instead."
+        )
+
+    return ORACLE_DSN
 
 # ========================
 # DB CONNECTION
 # ========================
 def get_db():
+    oracle_dsn = get_oracle_dsn()
     missing_config = [
         name for name, value in {
             "ORACLE_USER": ORACLE_USER,
             "ORACLE_PASSWORD": ORACLE_PASSWORD,
-            "ORACLE_DSN": ORACLE_DSN,
+            "ORACLE_DSN or ORACLE_HOST + ORACLE_SERVICE_NAME": oracle_dsn,
         }.items()
         if not value
     ]
@@ -45,7 +70,7 @@ def get_db():
         g.db = oracledb.connect(
             user=ORACLE_USER,
             password=ORACLE_PASSWORD,
-            dsn=ORACLE_DSN
+            dsn=oracle_dsn
         )
     return g.db
 

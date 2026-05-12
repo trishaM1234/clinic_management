@@ -15,5 +15,9 @@ services:
         sync: false
       - key: ORACLE_PASSWORD
         sync: false
-      - key: ORACLE_DSN
+      - key: ORACLE_HOST
+        sync: false
+      - key: ORACLE_PORT
+        value: "1521"
+      - key: ORACLE_SERVICE_NAME
         sync: false
