@@ -204,6 +204,7 @@ def register():
     try:
         hashed_password = generate_password_hash(data["password"])
 
+        # New signups should always be normal users (no role field in the form)
         execute_query("""
             INSERT INTO users (name, email, password, role)
             VALUES (:name, :email, :password, :role)
@@ -211,8 +212,9 @@ def register():
             "name": data["name"],
             "email": data["email"].strip().lower(),
             "password": hashed_password,
-            "role": data["role"]
+            "role": "user"
         })
+
 
         return jsonify({"success": True, "message": "User registered"})
 

@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
             loginForm.classList.remove('active');
             registerForm.classList.add('active');
         }
+
         clearMessage();
     }
 
@@ -49,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
     registerTab.addEventListener('click', () => switchTab('register'));
 
     // ========================
-    // LOGIN FUNCTION (IMPROVED)
+    // LOGIN FUNCTION
     // ========================
     async function handleLogin(event) {
         event.preventDefault();
@@ -80,9 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 return;
             }
 
-            // ========================
             // STORE AUTH DATA
-            // ========================
             localStorage.setItem('clinicToken', result.token);
             localStorage.setItem('clinicUser', JSON.stringify(result.user));
 
@@ -90,9 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             showMessage("Login successful!", "success");
 
-            // ========================
-            // ROLE REDIRECT
-            // ========================
+            // REDIRECT
             setTimeout(() => {
                 const role = result.user.role;
 
@@ -112,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // ========================
-    // REGISTER FUNCTION (IMPROVED)
+    // REGISTER FUNCTION
     // ========================
     async function handleRegister(event) {
         event.preventDefault();
@@ -121,7 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const name = document.getElementById('register-name').value.trim();
         const email = document.getElementById('register-email').value.trim();
         const password = document.getElementById('register-password').value;
-        const role = document.getElementById('register-role').value;
 
         if (!name || !email || !password) {
             showMessage("Please complete all fields.");
@@ -135,7 +131,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                body: JSON.stringify({ name, email, password, role })
+
+                body: JSON.stringify({
+                    name,
+                    email,
+                    password
+                })
+
             });
 
             const result = await response.json();
@@ -164,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
     registerForm.addEventListener('submit', handleRegister);
 
     // ========================
-    // AUTO LOGIN REDIRECT (IMPROVED)
+    // AUTO LOGIN REDIRECT
     // ========================
     const savedUser = localStorage.getItem("clinicUser");
 

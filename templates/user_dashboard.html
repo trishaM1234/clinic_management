@@ -3,32 +3,226 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>User Dashboard</title>
+    <title>Patient Portal</title>
+
     <link rel="stylesheet" href="/static/css/styles.css" />
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body {
+            background: #f4f9fc;
+            color: #1e293b;
+        }
+
+        /* =========================
+           NAVBAR
+        ========================== */
+        .navbar {
+            height: 70px;
+            background: linear-gradient(135deg, #0ea5e9, #06b6d4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .brand {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .button {
+            background: white;
+            color: #0891b2;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        .button:hover {
+            background: #e0f2fe;
+            transform: translateY(-2px);
+        }
+
+        .small {
+            padding: 8px 14px;
+        }
+
+        /* =========================
+           DASHBOARD
+        ========================== */
+        .dashboard {
+            max-width: 1100px;
+            margin: auto;
+            padding: 35px 20px;
+        }
+
+        .dashboard-section {
+            background: white;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 20px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+            border: 1px solid #e0f2fe;
+        }
+
+        .dashboard-section h2,
+        .dashboard-section h3 {
+            margin-bottom: 15px;
+            color: #0f172a;
+        }
+
+        .dashboard-section p {
+            color: #64748b;
+        }
+
+        /* =========================
+           FORM
+        ========================== */
+        .dashboard-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .dashboard-form label {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .dashboard-form input,
+        .dashboard-form select {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            outline: none;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+
+        .dashboard-form input:focus,
+        .dashboard-form select:focus {
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 3px rgba(6,182,212,0.2);
+        }
+
+        .dashboard-form button {
+            margin-top: 10px;
+            background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .dashboard-form button:hover {
+            opacity: 0.95;
+            transform: translateY(-2px);
+        }
+
+        /* =========================
+           TABLE SECTION
+        ========================== */
+        .table-responsive {
+            margin-top: 15px;
+            overflow-x: auto;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #dbeafe;
+        }
+
+        /* =========================
+           MESSAGE
+        ========================== */
+        .message {
+            margin-top: 20px;
+            padding: 14px;
+            border-radius: 12px;
+            background: #ecfeff;
+            border: 1px solid #99f6e4;
+            color: #0f766e;
+        }
+
+        /* =========================
+           RESPONSIVE
+        ========================== */
+        @media (max-width: 768px) {
+
+            .navbar {
+                padding: 0 15px;
+            }
+
+            .brand {
+                font-size: 1.2rem;
+            }
+
+            .dashboard {
+                padding: 20px 15px;
+            }
+
+            .dashboard-section {
+                padding: 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-   
+    <!-- HEADER -->
     <header class="navbar">
-        <div class="brand">Patient Portal</div>
+
+        <div class="brand">
+            🏥 Patient Portal
+        </div>
+
         <nav>
-            <button class="button small" id="logout-button">Logout</button>
+            <button class="button small" id="logout-button">
+                Logout
+            </button>
         </nav>
+
     </header>
 
-   
+    <!-- MAIN DASHBOARD -->
     <main class="dashboard">
 
-      
+        <!-- WELCOME -->
         <section class="dashboard-section">
+
             <h2>User Dashboard</h2>
-            <p>Book appointments and view your history.</p>
+
+            <p>
+                Book clinic appointments and manage your
+                appointment history easily.
+            </p>
+
         </section>
 
-       
+        <!-- BOOK APPOINTMENT -->
         <section class="dashboard-section">
-            <h3>Book Appointment</h3>
+
+            <h3>📅 Book Appointment</h3>
 
             <form id="appointment-form" class="dashboard-form">
 
@@ -41,24 +235,27 @@
                 <label>Time</label>
                 <input type="time" id="appointment-time" />
 
-                <button type="submit" class="button">
+                <button type="submit">
                     Book Appointment
                 </button>
+
             </form>
 
             <div id="user-message" class="message"></div>
+
         </section>
 
-      
+        <!-- HISTORY -->
         <section class="dashboard-section">
-            <h3>Your Appointment History</h3> 
+
+            <h3>📖 Your Appointment History</h3>
 
             <div id="appointment-list" class="table-responsive"></div>
+
         </section>
 
     </main>
 
-    
     <script src="/static/js/dashboard.js"></script>
 
 </body>
