@@ -11,13 +11,10 @@ services:
         value: "false"
       - key: AUTH_TOKEN
         generateValue: true
-      - key: ORACLE_USER
-        sync: false
-      - key: ORACLE_PASSWORD
-        sync: false
-      - key: ORACLE_HOST
-        sync: false
-      - key: ORACLE_PORT
-        value: "1521"
-      - key: ORACLE_SERVICE_NAME
-        sync: false
+
+      # SQLite (demo): local file (for persistence, add Render volume).
+      - key: SQLITE_PATH
+        value: "clinic.db"
+
+
+

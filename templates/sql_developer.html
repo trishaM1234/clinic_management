@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SQL Developer</title>
+
+    <link rel="stylesheet" href="/static/css/styles.css" />
+</head>
+<body>
+    <header class="navbar">
+        <div class="brand">🗄️ SQL Developer</div>
+        <nav>
+            <a class="button small" href="/admin">Back to Admin</a>
+            <button class="button small" id="logout-button" type="button">Logout</button>
+        </nav>
+    </header>
+
+    <main style="max-width:1100px;margin:2rem auto;padding:0 1rem;">
+        <section class="dashboard-section">
+            <h3>Run a SQL query (read-only)</h3>
+            <p style="margin-bottom:0.5rem;">
+                Only <b>SELECT</b> queries are allowed. Add <b>LIMIT</b> for best performance.
+            </p>
+
+            <form id="sql-form" class="dashboard-form">
+                <label>SQL</label>
+                <textarea id="sql-query" style="min-height:160px;padding:1rem;border-radius:14px;border:1px solid var(--border);font-family:Consolas, 'Courier New', monospace;" placeholder="SELECT * FROM users LIMIT 50;"></textarea>
+
+                <label>Max rows (server-side cap)</label>
+                <input id="sql-limit" type="number" min="1" max="2000" value="200" />
+
+                <button type="submit">Run Query</button>
+            </form>
+
+            <div id="sql-message" class="message" style="display:none;"></div>
+
+            <div id="sql-result" class="table-responsive" style="margin-top:1rem;"></div>
+            <div id="sql-error" class="message error" style="display:none;"></div>
+        </section>
+    </main>
+
+    <script src="/static/js/sql_developer.js"></script>
+</body>
+</html>
+

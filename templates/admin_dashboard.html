@@ -279,6 +279,8 @@
                 <li><a href="#users">👨‍⚕️ Users & Staff</a></li>
                 <li><a href="#appointments">📅 Appointments</a></li>
                 <li><a href="#create">➕ Create Appointment</a></li>
+                <li><a href="#transactions">Transactions</a></li>
+                <li><a href="/sql-dev">🗄️ SQL Developer</a></li>
             </ul>
 
         </aside>
@@ -309,6 +311,28 @@
                 <div id="appointment-list" class="table-responsive"></div>
             </section>
 
+            <!-- TRANSACTIONS -->
+            <section id="transactions" class="dashboard-section">
+                <h3>Transaction Logs</h3>
+
+                <div id="transaction-list" class="table-responsive"></div>
+            </section>
+
+            <!-- PATIENT RECORD -->
+            <section id="patient-record" class="dashboard-section">
+                <h3>Patient Record</h3>
+                <p>Select a patient to view appointment history and details.</p>
+
+                <div style="display:flex;flex-direction:column;gap:12px;max-width:420px;">
+                    <label style="font-weight:600;color:#334155;">Patient</label>
+                    <select id="patient-record-patient" style="padding:12px;border:1px solid #cbd5e1;border-radius:10px;outline:none;">
+                        <option value="">-- Select Patient --</option>
+                    </select>
+                </div>
+
+                <div id="patient-record-list" class="table-responsive" style="margin-top:15px;"></div>
+            </section>
+
             <!-- CREATE APPOINTMENT -->
             <section id="create" class="dashboard-section">
 
@@ -319,7 +343,7 @@
                     <label>User / Patient</label>
                     <select id="appointment-user"></select>
 
-                    <label>Staff</label>
+                    <label>Doctor</label>
                     <select id="appointment-staff"></select>
 
                     <label>Date</label>
@@ -327,6 +351,18 @@
 
                     <label>Time</label>
                     <input type="time" id="appointment-time" />
+
+                    <label>Check-up Type</label>
+                    <select id="checkup-type">
+                        <option value="Overall Check-up">Overall Check-up</option>
+                        <option value="General Consultation">General Consultation</option>
+                        <option value="Follow-up Check-up">Follow-up Check-up</option>
+                        <option value="Laboratory Review">Laboratory Review</option>
+                        <option value="Emergency Assessment">Emergency Assessment</option>
+                    </select>
+
+                    <label>Check-up Notes</label>
+                    <input type="text" id="checkup-notes" placeholder="Reason, symptoms, or remarks" />
 
                     <label>Status</label>
                     <select id="appointment-status">

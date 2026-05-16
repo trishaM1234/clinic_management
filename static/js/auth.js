@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // REDIRECT
             setTimeout(() => {
-                const role = result.user.role;
+                const role = (result.user.role || "").toLowerCase();
 
                 if (role === "admin") {
                     window.location.href = "/admin";
@@ -101,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = "/user";
                 }
             }, 500);
+
 
         } catch (error) {
             console.error(error);
@@ -115,11 +116,12 @@ document.addEventListener("DOMContentLoaded", function () {
         event.preventDefault();
         clearMessage();
 
-        const name = document.getElementById('register-name').value.trim();
+        const first_name = document.getElementById('register-first-name').value.trim();
+        const last_name = document.getElementById('register-last-name').value.trim();
         const email = document.getElementById('register-email').value.trim();
         const password = document.getElementById('register-password').value;
 
-        if (!name || !email || !password) {
+        if (!first_name || !last_name || !email || !password) {
             showMessage("Please complete all fields.");
             return;
         }
@@ -133,7 +135,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
 
                 body: JSON.stringify({
-                    name,
+                    first_name,
+                    last_name,
                     email,
                     password
                 })
@@ -175,7 +178,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const user = JSON.parse(savedUser);
 
             setTimeout(() => {
-                const role = user.role;
+                const role = (user.role || "").toLowerCase();
 
                 if (role === "admin") {
                     window.location.href = "/admin";
@@ -185,6 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     window.location.href = "/user";
                 }
             }, 300);
+
 
         } catch (e) {
             console.warn("Invalid stored user, clearing...");

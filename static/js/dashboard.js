@@ -9,6 +9,7 @@ try {
 
 let allAppointments = [];
 let allUsers = [];
+let allTransactions = [];
 
 // ========================
 // AUTH CHECK
@@ -21,9 +22,10 @@ function requireLogin() {
     return true;
 }
 
-if (!requireLogin()) {
-    throw new Error("Not logged in");
-}
+// Removed throw in browser-only JS to avoid breaking any tooling that attempts JS parsing.
+// If token/user is missing, redirect happens inside requireLogin().
+requireLogin();
+
 
 // ========================
 // HEADERS
@@ -33,6 +35,10 @@ function apiHeaders() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`
     };
+}
+
+function display(value) {
+    return value || "-";
 }
 
 // ========================
@@ -84,6 +90,7 @@ async function loadUsers() {
 
     const userSelect = document.getElementById("appointment-user");
     const staffSelect = document.getElementById("appointment-staff");
+    const patientRecordSelect = document.getElementById('patient-record-patient');
 
     if (userSelect) {
         userSelect.innerHTML = allUsers
@@ -92,15 +99,29 @@ async function loadUsers() {
             .join('');
     }
 
+    if (patientRecordSelect) {
+        patientRecordSelect.innerHTML = `
+            <option value="">-- Select Patient --</option>
+            ${allUsers
+                .filter(u => u.role === "user")
+                .map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`)
+                .join('')}
+        `;
+    }
+
     if (staffSelect) {
         staffSelect.innerHTML = allUsers
-            .filter(u => u.role === "staff")
-            .map(u => `<option value="${u.id}">${u.name} (${u.email})</option>`)
+            .filter(u => u.role === "admin" || u.role === "staff")
+            .map(u => {
+                const specialization = u.doctor_specialization ? ` - ${u.doctor_specialization}` : "";
+                return `<option value="${u.id}">${u.name}${specialization} (${u.email})</option>`;
+            })
             .join('');
     }
 
     renderUsers();
 }
+
 
 // ========================
 // RENDER USERS
@@ -114,15 +135,25 @@ function renderUsers() {
             <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th>First Name</th>
+                <th>Last Name</th>
                 <th>Email</th>
                 <th>Role</th>
+                <th>Doctor Specialization</th>
+                <th>Created</th>
+                <th>Updated</th>
             </tr>
             ${allUsers.map(u => `
                 <tr>
                     <td>${u.id}</td>
                     <td>${u.name}</td>
+                    <td>${display(u.first_name)}</td>
+                    <td>${display(u.last_name)}</td>
                     <td>${u.email}</td>
                     <td>${u.role}</td>
+                    <td>${display(u.doctor_specialization)}</td>
+                    <td>${display(u.created_at)}</td>
+                    <td>${display(u.updated_at)}</td>
                 </tr>
             `).join('')}
         </table>
@@ -152,6 +183,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const date = document.getElementById("appointment-date")?.value;
             const time = document.getElementById("appointment-time")?.value;
             const status = document.getElementById("appointment-status")?.value || "Pending";
+            const checkup_type = document.getElementById("checkup-type")?.value || "Overall Check-up";
+            const checkup_notes = document.getElementById("checkup-notes")?.value || "";
 
             if (!staff_id || !date || !time) {
                 showMessage("Please fill all fields.");
@@ -167,7 +200,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         staff_id: parseInt(staff_id),
                         appointment_date: date,
                         appointment_time: time,
-                        status
+                        status,
+                        checkup_type,
+                        checkup_notes
                     })
                 });
 
@@ -212,21 +247,7 @@ async function updateStatus(id, status) {
     await fetchJson(`/api/appointments/${id}`, {
         method: "PUT",
         headers: apiHeaders(),
-        body: JSON.stringify({ status })
-    });
-
-    reloadDashboard();
-}
-
-// ========================
-// DELETE
-// ========================
-async function deleteAppointment(id) {
-    if (!confirm("Delete this appointment?")) return;
-
-    await fetchJson(`/api/appointments/${id}`, {
-        method: "DELETE",
-        headers: apiHeaders()
+        body: JSON.stringify({ status, user_id: currentUser.id })
     });
 
     reloadDashboard();
@@ -251,7 +272,7 @@ function actionButtons(a) {
         html += `
             <button onclick="updateStatus(${a.id}, 'Confirmed')">Confirm</button>
             <button onclick="updateStatus(${a.id}, 'Completed')">Done</button>
-            <button onclick="deleteAppointment(${a.id})">Delete</button>
+            <button onclick="updateStatus(${a.id}, 'Cancelled')">Cancel</button>
         `;
     }
 
@@ -278,20 +299,32 @@ function renderAppointments(data) {
             <tr>
                 <th>ID</th>
                 <th>User</th>
-                <th>Staff</th>
+                <th>Patient Name</th>
+                <th>Doctor</th>
+                <th>Specialization</th>
+                <th>Check-up</th>
+                <th>Notes</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Status</th>
+                <th>Created</th>
+                <th>Updated</th>
                 <th>Actions</th>
             </tr>
             ${data.map(a => `
                 <tr>
                     <td>${a.id}</td>
                     <td>${a.user_id}</td>
-                    <td>${a.staff_id}</td>
-                    <td>${a.appointment_date}</td>
-                    <td>${a.appointment_time}</td>
+                    <td>${display(a.user_name)}</td>
+                    <td>${display(a.staff_name)}</td>
+                    <td>${display(a.doctor_specialization)}</td>
+                    <td>${display(a.checkup_type)}</td>
+                    <td>${display(a.checkup_notes)}</td>
+                    <td>${display(a.appointment_date)}</td>
+                    <td>${display(a.appointment_time)}</td>
                     <td class="${statusClass(a.status)}">${a.status}</td>
+                    <td>${display(a.created_at)}</td>
+                    <td>${display(a.updated_at)}</td>
                     <td>${actionButtons(a)}</td>
                 </tr>
             `).join('')}
@@ -311,12 +344,60 @@ window.filterAppointments = function () {
     const filtered = allAppointments.filter(a =>
         String(a.id || "").includes(value) ||
         String(a.user_id || "").includes(value) ||
-        String(a.staff_id || "").includes(value) ||
+        (a.user_name || "").toLowerCase().includes(value) ||
+        (a.staff_name || "").toLowerCase().includes(value) ||
+        (a.doctor_specialization || "").toLowerCase().includes(value) ||
+        (a.checkup_type || "").toLowerCase().includes(value) ||
+        (a.checkup_notes || "").toLowerCase().includes(value) ||
         (a.status || "").toLowerCase().includes(value)
     );
 
     renderAppointments(filtered);
 };
+
+// ========================
+// TRANSACTION LOGS
+// ========================
+function renderTransactions(data) {
+    const container = document.getElementById('transaction-list');
+    if (!container) return;
+
+    if (!Array.isArray(data)) data = [];
+    allTransactions = data;
+
+    container.innerHTML = `
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Time Stamp</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Entity</th>
+                <th>Entity ID</th>
+                <th>Details</th>
+            </tr>
+            ${data.map(t => `
+                <tr>
+                    <td>${t.id}</td>
+                    <td>${display(t.created_at)}</td>
+                    <td>${display(t.user_name || t.user_id)}</td>
+                    <td>${display(t.action)}</td>
+                    <td>${display(t.entity)}</td>
+                    <td>${display(t.entity_id)}</td>
+                    <td>${display(t.details)}</td>
+                </tr>
+            `).join('')}
+        </table>
+    `;
+}
+
+async function loadTransactions() {
+    const res = await fetchJson('/api/transactions', {
+        headers: apiHeaders()
+    });
+
+    renderTransactions(res?.transactions || []);
+}
 
 // ========================
 // DASHBOARD LOADERS
@@ -328,7 +409,61 @@ async function loadAdminDashboard() {
 
     renderAppointments(res?.appointments || []);
     await loadUsers();
+    await loadTransactions();
+
+    // Patient record UI
+    const patientSelect = document.getElementById('patient-record-patient');
+    if (patientSelect) {
+        patientSelect.addEventListener('change', async () => {
+            const patientId = patientSelect.value;
+            const container = document.getElementById('patient-record-list');
+            if (!container) return;
+
+            if (!patientId) {
+                container.innerHTML = '';
+                return;
+            }
+
+            const recordRes = await fetchJson(`/api/patient-record?patient_id=${patientId}`, {
+                headers: apiHeaders()
+            });
+
+            const appointments = recordRes?.appointments || [];
+
+            container.innerHTML = `
+                <table>
+                    <tr>
+                        <th>Appointment ID</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Doctor</th>
+                        <th>Specialization</th>
+                        <th>Check-up</th>
+                        <th>Notes</th>
+                        <th>Status</th>
+                        <th>Created</th>
+                        <th>Updated</th>
+                    </tr>
+                    ${appointments.map(a => `
+                        <tr>
+                            <td>${a.id}</td>
+                            <td>${display(a.appointment_date)}</td>
+                            <td>${display(a.appointment_time)}</td>
+                            <td>${display(a.staff_name)}</td>
+                            <td>${display(a.doctor_specialization)}</td>
+                            <td>${display(a.checkup_type)}</td>
+                            <td>${display(a.checkup_notes)}</td>
+                            <td class="${statusClass(a.status)}">${display(a.status)}</td>
+                            <td>${display(a.created_at)}</td>
+                            <td>${display(a.updated_at)}</td>
+                        </tr>
+                    `).join('')}
+                </table>
+            `;
+        });
+    }
 }
+
 
 async function loadStaffDashboard() {
     const res = await fetchJson(`/api/appointments?role=staff&user_id=${currentUser.id}`, {
@@ -365,4 +500,3 @@ init();
 // ========================
 window.logout = logout;
 window.updateStatus = updateStatus;
-window.deleteAppointment = deleteAppointment;

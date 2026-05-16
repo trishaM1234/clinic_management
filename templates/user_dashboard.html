@@ -226,7 +226,7 @@
 
             <form id="appointment-form" class="dashboard-form">
 
-                <label>Choose Staff</label>
+                <label>Choose Doctor</label>
                 <select id="appointment-staff"></select>
 
                 <label>Date</label>
@@ -234,6 +234,18 @@
 
                 <label>Time</label>
                 <input type="time" id="appointment-time" />
+
+                <label>Check-up Type</label>
+                <select id="checkup-type">
+                    <option value="Overall Check-up">Overall Check-up</option>
+                    <option value="General Consultation">General Consultation</option>
+                    <option value="Follow-up Check-up">Follow-up Check-up</option>
+                    <option value="Laboratory Review">Laboratory Review</option>
+                    <option value="Emergency Assessment">Emergency Assessment</option>
+                </select>
+
+                <label>Check-up Notes</label>
+                <input type="text" id="checkup-notes" placeholder="Reason, symptoms, or remarks" />
 
                 <button type="submit">
                     Book Appointment
